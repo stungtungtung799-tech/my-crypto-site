@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Crypto Miner</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0a0c10;
+            color: #4af626; /* Matrix Green */
+            text-align: center;
+            padding: 30px 10px;
+            margin: 0;
+        }
+        .miner-card {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #121620;
+            border: 2px solid #4af626;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(74, 246, 38, 0.3);
+        }
+        h1 {
+            color: #f7931a; /* Bitcoin Orange */
+            margin-top: 0;
+            font-family: sans-serif;
+        }
+        .stat {
+            font-size: 1.2rem;
+            margin: 15px 0;
+            background: #0a0c10;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #222;
+        }
+        .btn {
+            background-color: #f7931a;
+            color: #0a0c10;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .btn:hover {
+            background-color: #e38210;
+        }
+        .log-box {
+            height: 120px;
+            background-color: #000;
+            border: 1px solid #333;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 6px;
+            overflow-y: auto;
+            text-align: left;
+            font-size: 0.85rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="miner-card">
+        <h1>⛏️ Mobile Miner Sim</h1>
+        <p style="color: #aaa; font-family: sans-serif;">Click power to simulate phone mining safely without melting your real battery!</p>
+        
+        <div class="stat">🖥️ Hashrate: <span id="hashrate">0 H/s</span></div>
+        <div class="stat">💰 Mined BTC: <span id="balance">0.00000000</span></div>
+        
+        <button class="btn" id="mineBtn" onclick="toggleMining()">START MINING</button>
+        
+        <div class="log-box" id="logs">
+            [System] Simulator initialized.<br>
+            [System] Ready to start hash calculations...
+        </div>
+    </div>
+
+    <script>
+        let mining = false;
+        let btcBalance = 0.00000000;
+        let intervalId = null;
+        const logBox = document.getElementById("logs");
+
+        function addLog(text) {
+            logBox.innerHTML += `<br>[Mining] ${text}`;
+            logBox.scrollTop = logBox.scrollHeight; // Auto scroll down
+        }
+
+        function toggleMining() {
+            const btn = document.getElementById("mineBtn");
+            const hashText = document.getElementById("hashrate");
+            
+            if (!mining) {
+                mining = true;
+                btn.innerText = "STOP MINING";
+                btn.style.backgroundColor = "#ff4444";
+                hashText.innerText = "4,500 H/s";
+                addLog("Connecting to virtual mining pool...");
+                addLog("Searching for valid block headers...");
+                
+                // Start adding virtual Bitcoin every second
+                intervalId = setInterval(() => {
+                    // Simulates mining a tiny fraction of Bitcoin
+                    btcBalance += 0.00000012; 
+                    document.getElementById("balance").innerText = btcBalance.toFixed(8);
+                    
+                    // Randomly add technical looking logs
+                    if (Math.random() > 0.6) {
+                        const randomNonce = Math.floor(Math.random() * 900000) + 100000;
+                        addLog(`Checked nonce block #${randomNonce}... target mismatch.`);
+                    }
+                }, 1000);
+                
+            } else {
+                mining = false;
+                btn.innerText = "START MINING";
+                btn.style.backgroundColor = "#f7931a";
+                hashText.innerText = "0 H/s";
+                addLog("Mining paused. Hashrate dropped to 0.");
+                clearInterval(intervalId);
+            }
+        }
+    </script>
+
+</body>
+  </html>
+  
